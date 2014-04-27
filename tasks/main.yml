@@ -1,0 +1,17 @@
+---
+
+- name: add docker apt key
+  sudo: yes
+  apt_key: data="{{ lookup('file', 'docker.key') }}" state=present
+
+- name: add docker apt repository
+  sudo: yes
+  apt_repository: repo='deb http://get.docker.io/ubuntu docker main' state=present
+
+- name: install docker
+  sudo: yes
+  apt: pkg=lxc-docker update_cache=true state=latest
+
+- name: add admin user to docker group
+  sudo: yes
+  user: name=admin groups=docker append=yes
